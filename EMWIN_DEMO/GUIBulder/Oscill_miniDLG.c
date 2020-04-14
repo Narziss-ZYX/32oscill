@@ -428,11 +428,11 @@ WM_HWIN CreateOscilloscope(void) {
 void DMA2_Stream0_IRQHandler(void)
 {
 	OSIntEnter();
-//	static int i=0;
+	static int i=0;
 	
-//	printf("counter:%d  ",i);
-//	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
-//	i++;
+	printf("counter:%d  ",i);
+	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
+	i++;
 	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
 	if(DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0))
 	{	
