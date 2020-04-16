@@ -449,17 +449,17 @@ ARM Macro Assembler    Page 7
   282 00000034         
   283 00000034                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
-erwork --depend=..\obj\cpu_a.d -o..\obj\cpu_a.o -I"D:\STM32project\STM32F4\源码
-\EMWIN_UI\EMWIN示波器（DAC_DMA输出，ADC_DMA采集 中断有问题）\USER\RTE" -IE:\Kei
-l_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include -IC:\Keil_v5\ARM\CMSIS\In
-clude --predefine="__UVISION_VERSION SETA 521" --predefine="STM32F40_41xxx SETA
+erwork --depend=..\obj\cpu_a.d -o..\obj\cpu_a.o -ID:\STM32project\STM32F4\源码\
+EMWIN_UI\EMWIN示波器（DAC_DMA输出，ADC_DMA采集）\32oscill\USER\RTE -IE:\Keil_v5
+\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include -IC:\Keil_v5\ARM\CMSIS\Includ
+e --predefine="__UVISION_VERSION SETA 521" --predefine="STM32F40_41xxx SETA 1" 
 
 
 
 ARM Macro Assembler    Page 8 
 
 
- 1" --list=..\obj\cpu_a.lst ..\UCOSIII\uC-CPU\ARM-Cortex-M4\RealView\cpu_a.asm
+--list=..\obj\cpu_a.lst ..\UCOSIII\uC-CPU\ARM-Cortex-M4\RealView\cpu_a.asm
 
 
 

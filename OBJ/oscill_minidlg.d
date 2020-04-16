@@ -107,3 +107,4 @@
 ..\obj\oscill_minidlg.o: ..\UCOSIII\uC-LIB\lib_math.h
 ..\obj\oscill_minidlg.o: ..\UCOSIII\uCOS_CONFIG\app_cfg.h
 ..\obj\oscill_minidlg.o: ..\UCOSIII\UCOS_BSP\bsp.h
+..\obj\oscill_minidlg.o: ..\EMWIN_DEMO\GUIBulder\MainDLG.h

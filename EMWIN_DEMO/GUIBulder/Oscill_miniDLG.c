@@ -26,6 +26,7 @@
 #include "malloc.h"
 #include "usart.h"
 #include "includes.h"
+#include "MainDLG.h"
 
 /*********************************************************************
 *
@@ -68,8 +69,9 @@ static u16 ShowWave_BufTemp[1024]={0};  //临时绘图数组
 static short int data_yt;
 static	GRAPH_SCALE_Handle hScaleV;
 //static	GRAPH_SCALE_Handle hScaleH;
-static	GRAPH_DATA_Handle hData;
+static	GRAPH_DATA_Handle hData_1;
 u16 usCurPos;    //ADC1读取的位置
+WM_HTIMER hTimer_2;
 
 /*********************************************************************
 *
@@ -104,7 +106,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { BUTTON_CreateIndirect, "-", ID_BUTTON_9, 723, 225, 50, 25, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "Freq:", ID_TEXT_4, 593, 304, 43, 20, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "Vpp:", ID_TEXT_5, 593, 340, 43, 20, 0, 0x0, 0 },
-  { BUTTON_CreateIndirect, "Button1", ID_BUTTON_10, 30, 414, 110, 45, 0, 0x0, 0 },
+  { BUTTON_CreateIndirect, "ESC", ID_BUTTON_10, 30, 414, 110, 45, 0, 0x0, 0 },
   { BUTTON_CreateIndirect, "Button2", ID_BUTTON_11, 199, 414, 110, 45, 0, 0x0, 0 },
   { BUTTON_CreateIndirect, "Button3", ID_BUTTON_12, 390, 418, 110, 40, 0, 0x0, 0 },
   { BUTTON_CreateIndirect, "Button4", ID_BUTTON_13, 555, 419, 110, 40, 0, 0x0, 0 },
@@ -173,9 +175,9 @@ void InitDialog(WM_MESSAGE * pMsg)
 		GRAPH_SCALE_SetNumDecs(hScaleV,1);  //刻度小数点位数
 		GRAPH_SCALE_SetOff(hScaleV,180);    //刻度上移180
 		GRAPH_SCALE_SetFactor(hScaleV, 0.008f); //刻度换算
-		hData=GRAPH_DATA_YT_Create(GUI_RED, 529, 0, 0); //创建数据对象
-		GRAPH_AttachData(hItem,hData);      //添加到控件
-		GRAPH_DATA_YT_SetOffY(hData,100);    //数据对象偏移80
+		hData_1=GRAPH_DATA_YT_Create(GUI_RED, 529, 0, 0); //创建数据对象
+		GRAPH_AttachData(hItem,hData_1);      //添加到控件
+		GRAPH_DATA_YT_SetOffY(hData_1,100);    //数据对象偏移80
 }
 
 /*********************************************************************
@@ -185,12 +187,13 @@ void InitDialog(WM_MESSAGE * pMsg)
 static void _cbDialog(WM_MESSAGE * pMsg) {
   int     NCode;
   int     Id;
+	u16 i,j;
 	
   switch (pMsg->MsgId) {
 	case WM_PAINT:
 			GUI_SetBkColor(GUI_WHITE);  //设置背景色
 			GUI_Clear();
-	break;
+	  break;
   case WM_INIT_DIALOG:
 			InitDialog(pMsg);     //初始化窗口
     break;
@@ -338,15 +341,16 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
       // USER END
       }
       break;
-    case ID_BUTTON_10: // Notifications sent by 'Button1'
+    case ID_BUTTON_10: // Notifications sent by 'ESC'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
         // USER START (Optionally insert code for reacting on notification message)
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+					WM_DeleteTimer(hTimer_2);
+					GUI_EndDialog(pMsg->hWin, 0);
+					CreateMian();
         break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
@@ -400,61 +404,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     break;
   // USER START (Optionally insert additional message handling)
   // USER END
-  default:
-    WM_DefaultProc(pMsg);
-    break;
-  }
-}
-
-
-/*********************************************************************
-*
-*       Public code
-*
-**********************************************************************
-*/
-/*********************************************************************
-*
-*       CreateOscilloscope
-*/
-
-WM_HWIN CreateOscilloscope(void) {
-  WM_HWIN hWin;
-
-  hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
-  return hWin;
-}
-
-void DMA2_Stream0_IRQHandler(void)
-{
-	OSIntEnter();
-	static int i=0;
-	
-	printf("counter:%d  ",i);
-	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
-	i++;
-	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
-	if(DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0))
-	{	
-//		ADC_DMACmd(ADC1, DISABLE);
-		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
-		DMA2_TransferCompleteFlag=1;
-//		printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
-	}
-
-	OSIntExit();
-}
-
-void Show_Task(void)
-{
-	
-	u16 i,j;
-
-	WM_HWIN hWin;
-  hWin=CreateOscilloscope();         //创建窗体	
-	while(1)
-	{
-		
+	case WM_TIMER:
 		if(DMA2_TransferCompleteFlag)
 		{
 			DMA2_TransferCompleteFlag = 0;
@@ -505,17 +455,131 @@ void Show_Task(void)
 			{
 				ShowWave_Buffer[i] = ShowWave_BufTemp[i+Trig_Positin];
 				data_yt=(I16)(ShowWave_Buffer[i]*3.3*80/4095);
-				GRAPH_DATA_YT_AddValue(hData,data_yt);
+				GRAPH_DATA_YT_AddValue(hData_1,data_yt);
 			}
 //    for(i=0;i<100;i++) printf("Array_ADC1Covert:%d  ",*(Array_ADC1Covert+i));
 
 //		printf("malloc_flag:%d\r\n",malloc_flag);
 		}
-	
-   GUI_Delay(10);
-		
-	}	
+	  WM_RestartTimer(hTimer_2, 100);
+    break;
+  default:
+    WM_DefaultProc(pMsg);
+    break;
+  }
 }
+
+
+/*********************************************************************
+*
+*       Public code
+*
+**********************************************************************
+*/
+/*********************************************************************
+*
+*       CreateOscilloscope
+*/
+
+WM_HWIN CreateOscilloscope(void) {
+  WM_HWIN hWin;
+
+  hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+	hTimer_2 = WM_CreateTimer(WM_GetClientWindow(hWin),0,100,0); 
+  return hWin;
+}
+
+void DMA2_Stream0_IRQHandler(void)
+{
+	OSIntEnter();
+//	static int i=0;
+//	
+//	printf("counter:%d  ",i);
+//	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
+//	i++;
+//	printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
+	if(DMA_GetITStatus(DMA2_Stream0,DMA_IT_TCIF0))
+	{	
+//		ADC_DMACmd(ADC1, DISABLE);
+		DMA_ClearITPendingBit(DMA2_Stream0,DMA_IT_TCIF0);
+		DMA2_TransferCompleteFlag=1;
+//		printf("DMA2_TransferCompleteFlag:%d\r\n",DMA2_TransferCompleteFlag);
+	}
+
+	OSIntExit();
+}
+
+//void Show_Task(void)
+//{
+//	
+//	u16 i,j;
+
+//	WM_HWIN hWin;
+//  hWin=CreateOscilloscope();         //创建窗体	
+//	while(1)
+//	{
+//		
+//		if(DMA2_TransferCompleteFlag)
+//		{
+//			DMA2_TransferCompleteFlag = 0;
+//			usCurPos = 4000 - DMA2_Stream0->NDTR;
+//			if(usCurPos < 1024)
+//			{
+//				//j = 2048 - usCurPos;
+//				//j = 10240 - j;
+//				j = 2976 + usCurPos;
+//				
+//				/* 获取1k数据的前部分  */
+//				for(i = j; i < 4000; i++)
+//				{
+//					ShowWave_BufTemp[i-j] = *(Array_ADC1Covert+i);
+//				}
+//				
+//				j = 1024 - usCurPos;
+//				
+//				/* 获取1K数据的后部分 */
+//				for(i = 0; i < usCurPos; i++)
+//				{
+//					ShowWave_BufTemp[j+i] = *(Array_ADC1Covert+i);
+//				}		
+//			}
+//			else
+//			{	
+//				usCurPos = usCurPos - 1024;
+//					for(i=0;i<1024;i++)
+//				{
+//					ShowWave_BufTemp[i] = *(Array_ADC1Covert+i+usCurPos);
+//				}
+//			}
+//			
+////			for(i=0;i<1000;i++)
+////			{
+////				ShowWave_Buffer[i] = *(Array_ADC1Covert+i);
+////			}
+////			 ADC_DMACmd(ADC1, ENABLE);      //使能DMA
+//			for(i=0; i<495; i++)            //找到满足触发条件的坐标
+//			{
+//				 if(ShowWave_BufTemp[i] < Trig_Value && ShowWave_BufTemp[i+1] > Trig_Value) //满足触发条件
+//				 {
+//					 Trig_Positin = i;
+//					 break;
+//				 }
+//			}
+//			for(i=0;i<529;i++)
+//			{
+//				ShowWave_Buffer[i] = ShowWave_BufTemp[i+Trig_Positin];
+//				data_yt=(I16)(ShowWave_Buffer[i]*3.3*80/4095);
+//				GRAPH_DATA_YT_AddValue(hData_1,data_yt);
+//			}
+////    for(i=0;i<100;i++) printf("Array_ADC1Covert:%d  ",*(Array_ADC1Covert+i));
+
+////		printf("malloc_flag:%d\r\n",malloc_flag);
+//		}
+//	
+//   GUI_Delay(10);
+//		
+//	}	
+//}
 
 
 /*************************** End of file ****************************/

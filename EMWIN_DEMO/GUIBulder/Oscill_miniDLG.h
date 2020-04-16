@@ -5,6 +5,6 @@
 
 
 WM_HWIN CreateOscilloscope(void);
-void Show_Task(void);
+//void Show_Task(void);
 
 #endif

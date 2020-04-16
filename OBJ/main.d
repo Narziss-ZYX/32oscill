@@ -124,3 +124,4 @@
 ..\obj\main.o: ..\EMWIN\STemWin\inc\KNOB.h
 ..\obj\main.o: ..\HARDWARE\DAC_wave\dac_wave.h
 ..\obj\main.o: ..\HARDWARE\ADC\adc.h
+..\obj\main.o: ..\EMWIN_DEMO\GUIBulder\MainDLG.h

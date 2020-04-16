@@ -45,14 +45,13 @@ void SquareWave_Data(u16 cycle ,u16 *D)
 void TriWave_Data(u16 cycle ,u16 *D)
 {
 		int i;
-	for(i=0;i<cycle/2;i++)
-	{
-			D[i]=(u16)(Vref*1.0*i/(cycle/2-1)*4095/3.3);
-	}
-	for(i=cycle/2-2;i>=0;i--)
-	{
-		D[i]=(u16)(Vref*1.0*i/(cycle/2-1)*4095/3.3);
-	}
+	for(i=0;i<cycle;i++)
+		{
+			 if(i<cycle/2)
+				D[i]= (u16)(2.0*i/(cycle-1)*4095.0/3.3);
+			 else
+				D[i]= (u16)(2.0*((cycle-1)-i)/(cycle-1)*4095.0/3.3);
+		}
 }
 
 ///******************正弦波形表***********************/
@@ -277,5 +276,27 @@ void Key_Control()
 		  break;
 		}	
 
+}
+
+void Change_Wave(u8 WaveType)
+{
+	DMA_Cmd(DMA1_Stream5,DISABLE);
+	switch(WaveType)           
+	{
+		case SineWave:
+			SineWave_Data(N,Array_Wavedata);     //生成正弦波表
+			break;
+		case SawToothWave:        
+			SawTooth_Data(N,Array_Wavedata);     //生成锯齿波表
+			break;
+		case SquareWave:          
+			SquareWave_Data(N,Array_Wavedata);   //生成方波表
+			break;
+		case TriWave:            
+			TriWave_Data(N,Array_Wavedata);      //生成三角波表 
+		  break;
+	}
+  DMA1_Int_Init(DAC_DHR12R1,Array_Wavedata,N);
+	DMA_Cmd(DMA1_Stream5, ENABLE);  //使能DMA      
 }
 

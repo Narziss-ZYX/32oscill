@@ -7,7 +7,7 @@
 #define PI  3.1415926
 #define Vref 2		//0.1~3.3V可调
 #define Um  (Vref/2)
-#define N 1000
+#define N 400
 
 /********不需要的波形注释掉即可**********/
 //#define  Sine_WaveOutput_Enable
@@ -18,5 +18,8 @@
 
 void Wave_Init(u32 Freq,u8 WaveType);
 void Key_Control(void);
+void Change_Wave(u8 WaveType);
+void WaveFre_ADD(void);
+void WaveFre_SUB(void);
 
 #endif

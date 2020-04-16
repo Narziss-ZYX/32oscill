@@ -18,6 +18,7 @@
 #include "DIALOG.h"
 #include "dac_wave.h"
 #include "adc.h"
+#include "MainDLG.h"
 /************************************************
  ALIENTEK 探索者STM32F407开发板 
  STemWin GUIBulider使用
@@ -222,8 +223,9 @@ void emwindemo_task(void *p_arg)
 	while(1)
 	{
 //		GUI_Exec();
-		Show_Task();
+//		Show_Task();
 //		OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_PERIODIC,&err);//延时10ms
+		Main_Demo();
 	}
 }
 

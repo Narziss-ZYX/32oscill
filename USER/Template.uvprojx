@@ -335,7 +335,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,__FPU_PRESENT = 1,__FPU_USED=1,ARM_MATH_CM4,__CC_ARM</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\HARDWARE\IIC;..\HARDWARE\LCD;..\HARDWARE\LED;..\HARDWARE\SRAM;..\HARDWARE\TIMER;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\SDIO;..\HARDWARE\TOUCH;..\HARDWARE\W25QXX;..\TEXT;..\USMART;..\FATFS\src;..\FATFS\exfuns;..\MALLOC;..\FWLIB\CMSIS\Include;..\EMWIN\STemWin\Config;..\EMWIN\STemWin\inc;..\EMWIN\Demo;..\UCOSIII\uC-CPU;..\UCOSIII\uC-LIB;..\UCOSIII\uCOS-III;..\UCOSIII\UCOS_BSP;..\UCOSIII\uCOS_CONFIG;..\UCOSIII\uCOS-III\Source;..\UCOSIII\uC-CPU\ARM-Cortex-M4\RealView;..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M4\RealView;..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M4\Generic\RealView;..\HARDWARE\ADC;..\HARDWARE\DAC_wave;..\HARDWARE\KEY;..\EMWIN_DEMO\GUIBulder</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\HARDWARE\IIC;..\HARDWARE\LCD;..\HARDWARE\LED;..\HARDWARE\SRAM;..\HARDWARE\TIMER;..\HARDWARE\24CXX;..\HARDWARE\SPI;..\HARDWARE\SDIO;..\HARDWARE\TOUCH;..\HARDWARE\W25QXX;..\TEXT;..\USMART;..\FATFS\src;..\FATFS\exfuns;..\MALLOC;..\FWLIB\CMSIS\Include;..\EMWIN\STemWin\Config;..\EMWIN\STemWin\inc;..\EMWIN\Demo;..\UCOSIII\uC-CPU;..\UCOSIII\uC-LIB;..\UCOSIII\uCOS-III;..\UCOSIII\UCOS_BSP;..\UCOSIII\uCOS_CONFIG;..\UCOSIII\uCOS-III\Source;..\UCOSIII\uC-CPU\ARM-Cortex-M4\RealView;..\UCOSIII\uC-LIB\Ports\ARM-Cortex-M4\RealView;..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M4\Generic\RealView;..\HARDWARE\ADC;..\HARDWARE\DAC_wave;..\HARDWARE\KEY;..\EMWIN_DEMO\GUIBulder;..\HARDWARE\PWM</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -478,6 +478,11 @@
               <FileName>key.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\KEY\key.c</FilePath>
+            </File>
+            <File>
+              <FileName>pwm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\PWM\pwm.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -923,6 +928,31 @@
               <FileName>Oscill_miniDLG.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\EMWIN_DEMO\GUIBulder\Oscill_miniDLG.c</FilePath>
+            </File>
+            <File>
+              <FileName>GeneratorDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\EMWIN_DEMO\GUIBulder\GeneratorDLG.c</FilePath>
+            </File>
+            <File>
+              <FileName>LEDDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\EMWIN_DEMO\GUIBulder\LEDDLG.c</FilePath>
+            </File>
+            <File>
+              <FileName>MianDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\EMWIN_DEMO\GUIBulder\MianDLG.c</FilePath>
+            </File>
+            <File>
+              <FileName>PWMDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\EMWIN_DEMO\GUIBulder\PWMDLG.c</FilePath>
+            </File>
+            <File>
+              <FileName>WELCOMEDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\EMWIN_DEMO\GUIBulder\WELCOMEDLG.c</FilePath>
             </File>
           </Files>
         </Group>

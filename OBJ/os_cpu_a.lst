@@ -382,12 +382,12 @@ ARM Macro Assembler    Page 6
               00000000 
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
-erwork --depend=..\obj\os_cpu_a.d -o..\obj\os_cpu_a.o -I"D:\STM32project\STM32F
-4\源码\EMWIN_UI\EMWIN示波器（DAC_DMA输出，ADC_DMA采集 中断有问题）\USER\RTE" -I
-E:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include -IC:\Keil_v5\ARM\CM
-SIS\Include --predefine="__UVISION_VERSION SETA 521" --predefine="STM32F40_41xx
-x SETA 1" --list=..\obj\os_cpu_a.lst ..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M4\Ge
-neric\RealView\os_cpu_a.asm
+erwork --depend=..\obj\os_cpu_a.d -o..\obj\os_cpu_a.o -ID:\STM32project\STM32F4
+\源码\EMWIN_UI\EMWIN示波器（DAC_DMA输出，ADC_DMA采集）\32oscill\USER\RTE -IE:\K
+eil_v5\ARM\PACK\Keil\STM32F4xx_DFP\1.0.8\Device\Include -IC:\Keil_v5\ARM\CMSIS\
+Include --predefine="__UVISION_VERSION SETA 521" --predefine="STM32F40_41xxx SE
+TA 1" --list=..\obj\os_cpu_a.lst ..\UCOSIII\uCOS-III\Ports\ARM-Cortex-M4\Generi
+c\RealView\os_cpu_a.asm
 
 
 
